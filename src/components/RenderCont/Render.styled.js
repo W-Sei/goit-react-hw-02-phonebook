@@ -25,6 +25,7 @@ export const Button = styled.button`
   :hover,
   :focus {
     background-color: #f7e2b2;
+    border: 1px solid black;
     color: black;
     font-weight: 700;
   }

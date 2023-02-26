@@ -40,6 +40,7 @@ export const Button = styled.button`
   :hover,
   :focus {
     background-color: #F7E2B2;
+    border: 1px solid black;
     color: black;
     font-weight: 600;
   }
