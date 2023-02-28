@@ -8,6 +8,7 @@ import Notiflix from 'notiflix';
 import { Wrapper } from './Wrapper/Wrapper.styled';
 import { TitleContact, TitleMain } from './Title/Title.styled';
 import { ContactsWrapper } from './Wrapper/ContactsWrapper.styled';
+import { nanoid } from 'nanoid';
 
 export class App extends Component {
   state = {
@@ -18,32 +19,28 @@ export class App extends Component {
       { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
     ],
     filter: '',
-    name: '',
-    number: '',
   };
 
   findName = evt => {
-    const findName = evt.target.value;
-    this.setState({ filter: findName.toLowerCase() });
-
-    let nameFound;
-    nameFound === findName ? this.setState({ filter: findName.toLowerCase() }) : Notiflix.Notify.info(`No such contact in the list`);
+    this.setState({ filter: evt.target.value.toLowerCase() });
   };
 
-  addContact = newContact => {
-    let isPresent;
-    this.state.contacts.map(
-      contact => (isPresent = contact.name === newContact.name)
-    );
+  addContact = ({ name, number }) => {
+    const contact = {
+      id: nanoid(),
+      name,
+      number,
+    };
 
-    if (isPresent === false) {
-      Notiflix.Notify.info(`${newContact.name} is already in your contacts`);
+    let prevContact = this.state.contacts.map(({ name }) => name);
+    if (prevContact.includes(name)) {
+      Notiflix.Notify.info(`${name} is already in contacts`);
       return;
-    } else
-      this.setState(prevState => {
-        prevState.contacts.push(newContact);
-        return { contacts: [...prevState.contacts] };
-      });
+    } else {
+      this.setState(({ contacts }) => ({
+        contacts: [contact, ...contacts],
+      }));
+    }
   };
 
   deleteContact = id => {
