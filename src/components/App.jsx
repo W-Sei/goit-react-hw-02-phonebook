@@ -32,15 +32,17 @@ export class App extends Component {
       number,
     };
 
-    let prevContact = this.state.contacts.map(({ name }) => name);
-    if (prevContact.includes(name)) {
+    let contactExists = this.state.contacts.findIndex(
+      contact => contact.name === name
+    );
+ 
+    if (contactExists >= 0) {
       Notiflix.Notify.info(`${name} is already in contacts`);
       return;
-    } else {
-      this.setState(({ contacts }) => ({
-        contacts: [contact, ...contacts],
-      }));
     }
+    this.setState(prevState => ({
+      contacts: [contact, ...prevState.contacts],
+    }));
   };
 
   deleteContact = id => {
